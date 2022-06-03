@@ -8,8 +8,8 @@ import DropdownMenu from './DropdownMenu';
 function App() {
 
 const [minesMatrix,setMinesMatrix] = useState()
-const [arrSize,setArrSize] = useState(14)
-const [minesNum,setMinesNum] = useState(25)
+const [arrSize,setArrSize] = useState(9)
+const [minesNum,setMinesNum] = useState(10)
 const [flagNum,setFlagNum] = useState(minesNum)
 const [placesToFree,setPlacesToFree] = useState((arrSize * arrSize)-minesNum)
 const [gameIsFinished,setGameIsFinished] = useState(false)
