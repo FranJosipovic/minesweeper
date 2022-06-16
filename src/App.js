@@ -458,7 +458,7 @@ return (
           {gameIsWon ?
           <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column",marginTop:"10vh"}}>
             <div style={{color:"white",marginBottom:"30px"}}>Bravo pobijedio si</div>
-            {jokersUsed && <AddtoLeaderboard minesNum={minesNum} timeforDisplay={getMinsAndSecs(timePlayed)} timeforSort={timePlayed} jokersUsed={jokersUsed}/>}
+            {jokersUsed >= 0 && <AddtoLeaderboard minesNum={minesNum} timeforDisplay={getMinsAndSecs(timePlayed)} timeforSort={timePlayed} jokersUsed={jokersUsed}/>}
             <h2 style={{color:"white"}}>Iskoristeno jokera : {jokersUsed}</h2>
             <h1 style={{color:"white",marginLeft:"20px",marginTop:"-20px"}}>Vrijeme igre : {getMinsAndSecs(timePlayed)}</h1>
             <button onClick={()=>{startGame()}}>Igraj Ponovno</button>
