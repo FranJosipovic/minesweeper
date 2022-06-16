@@ -39,3 +39,16 @@
   background-color: rgba(31, 31, 33, 0.9);
   border-radius: 8px;
 }
+
+.leaderboard {
+  position: absolute;
+  width: 80vw;
+  max-height: 80vw;
+  height: 80vh;
+  top: 10vh;
+  left:10vw;
+}
+
+.item:hover{
+  cursor: pointer;
+}
