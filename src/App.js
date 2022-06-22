@@ -30,6 +30,10 @@ const numMinesRef = useRef(0)
 arrSizeRef.current = arrSize
 numMinesRef.current = minesNum
 
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
 const getMinsAndSecs = (time) => {
   let mind = time % 3600;
   let minutes = Math.floor(mind / 60);
@@ -401,7 +405,7 @@ const toggleFlag = (item) =>{
 }
 
 const fetchLeaderboard = (typeSort) => {
-  fetch(`https://react-mines-fran.herokuapp.com/getLeaderboard/${typeSort}`,{
+  fetch(` https://francorsproxy.herokuapp.com/getLeaderboard/${typeSort}`,{
     method:"GET",
   }).then(res=>res.json())
   .then(data=>{
@@ -420,18 +424,18 @@ const activateJoker = () => {
 
 return (
   <div className="App">
-    <div style={{width:"98.9wv"}}><DropdownMenu setJokerTriesByDificulty={setJokerTriesByDificulty} setLeaderboardIsOpen={setLeaderboardIsOpen} setArrSize={setArrSize} setMinesNum={setMinesNum} startGame={startGame} minesNum={minesNum}/></div>
-    <div style={{display:"flex",justifyContent:"center",flexDirection:"row",alignItems:"center"}}>
-      <button style={{marginRight:"100px"}} onClick={()=>{fetchLeaderboard('default')}}>open leaderboard</button>
-      <h5><img src={flag} alt="flag" style={{width:"20px",height:"20px"}}/> : {flagNum}</h5>
+    <div style={{width:"100%"}}><DropdownMenu setJokerTriesByDificulty={setJokerTriesByDificulty} setLeaderboardIsOpen={setLeaderboardIsOpen} setArrSize={setArrSize} setMinesNum={setMinesNum} startGame={startGame} minesNum={minesNum}/></div>
+    <div className='flex flex-row justify-center items-inline space-x-14 pt-10'>
+      <button className="border-2 rounded-md border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white" onClick={()=>{fetchLeaderboard('default')}}>open leaderboard</button>
+      <h5 className='flex'><img src={flag} alt="flag" className='w-5 h-5'/> : {flagNum}</h5>
       
-      <h3 style={{marginLeft:"50px"}}>Vrijeme =&gt; {getMinsAndSecs(timePlayed)}</h3>
-      <div style={{display:"flex",flexDirection:"row"}}>
-        <div onClick={()=>{activateJoker()}} style={{maxWidth:"15vw",textAlign:"center",marginLeft:"20px",height:"30px",borderRadius:"2px",border:"1px solid black",cursor:"pointer",backgroundColor: jokerIsActive ? "lightGreen":""}}> joker zovi : {jokerTries}</div>
+      <h3>Vrijeme : {getMinsAndSecs(timePlayed)}</h3>
+      <div className='flex space-x-2'>
+        <div className={classNames("cursor-pointer border-2 rounded-md",jokerIsActive ? "bg-green-700 text-white": "border-green-700 text-green-700" )} onClick={()=>{activateJoker()}}> joker zovi : {jokerTries}</div>
+        {jokerIsActive && <div>JOKER AKTIVIRAN!!!</div>}
       </div>
-      
     </div>
-    <div className='appWrap' style={{pointerEvents:gameIsFinished ? "none" : ""}}>
+    <div className={classNames("appWrap",minesNum === 99 ? "mt-10" : "")} style={{pointerEvents:gameIsFinished ? "none" : ""}}>
       {minesMatrix && minesMatrix.map((item,i) => {
         return (
           <div className='rowWrap' key={i}>{
@@ -442,11 +446,11 @@ return (
                 toggleFlag(jItem,i,j)
                 }}>
                 {jItem.showBack ?
-                  <div className='item' style={{backgroundColor : (j % 2 === 0) ? i % 2 === 0 ? "green" : "lightgreen" : i % 2 !== 0 ? "green" : "lightgreen"}}>
+                  <div className='item' style={{height: minesNum === 40 ? "30px": minesNum===99 ? "25px" : "50px",width: minesNum === 40 ? "30px": minesNum===99 ? "25px" : "50px",backgroundColor : (j % 2 === 0) ? i % 2 === 0 ? "green" : "lightgreen" : i % 2 !== 0 ? "green" : "lightgreen"}}>
                     {jItem.isFlaged && <img style={{width:"100%",height:"100%"}} src={flag} alt="flag"/>}
                   </div>
                 :
-                  <div className='item' style={{color:jItem.color,fontWeight:"20000",backgroundColor : (j % 2 === 0) ? i % 2 === 0 ? "rgb(179, 175, 175)" : "lightgrey" : i % 2 !== 0 ? "rgb(179, 175, 175)" : "lightgrey"}}>{jItem.value === 0 ? <></> : jItem.isMine ? <><img style={{width :"100%",height:"100%",backgroundColor:"red"}} src={minica} alt="mine" /></>:<>{jItem.value}</> }</div>
+                  <div className='item' style={{height: minesNum === 40 ? "30px": minesNum===99 ? "25px" : "50px",width: minesNum === 40 ? "30px": minesNum===99 ? "25px" : "50px",color:jItem.color,fontWeight:"20000",backgroundColor : (j % 2 === 0) ? i % 2 === 0 ? "rgb(179, 175, 175)" : "lightgrey" : i % 2 !== 0 ? "rgb(179, 175, 175)" : "lightgrey"}}>{jItem.value === 0 ? <></> : jItem.isMine ? <><img style={{width :"100%",height:"100%",backgroundColor:"red"}} src={minica} alt="mine" /></>:<>{jItem.value}</> }</div>
                 }
               </div>
             )
@@ -454,19 +458,21 @@ return (
           </div>)})}
       </div>
       {gameIsFinished &&
-        <div className='showEndGame'>
+        <div className='text-white flex flex-col justify-center items-center absolute w-70 h-70 showEndGame'>
           {gameIsWon ?
-          <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column",marginTop:"10vh"}}>
-            <div style={{color:"white",marginBottom:"30px"}}>Bravo pobijedio si</div>
+          <div className="space-y-7">
+            <div className='text-center'>Bravo pobjeda</div>
             {jokersUsed >= 0 && <AddtoLeaderboard minesNum={minesNum} timeforDisplay={getMinsAndSecs(timePlayed)} timeforSort={timePlayed} jokersUsed={jokersUsed}/>}
-            <h2 style={{color:"white"}}>Iskoristeno jokera : {jokersUsed}</h2>
-            <h1 style={{color:"white",marginLeft:"20px",marginTop:"-20px"}}>Vrijeme igre : {getMinsAndSecs(timePlayed)}</h1>
-            <button onClick={()=>{startGame()}}>Igraj Ponovno</button>
+            <h2>Iskoristeno jokera : {jokersUsed}</h2>
+            <h1>Vrijeme igre : {getMinsAndSecs(timePlayed)}</h1>
+            <div className='text-center'>
+              <button className="border-2 text-white rounded-md hover:text-black hover:bg-white" onClick={()=>{startGame()}}>Igraj Ponovno</button>
+            </div>
           </div> 
           :
           <div style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
             <div style={{color:"white",marginBottom:"30px",marginTop:"30%"}}>IZGUBIO SI</div>
-            <button style={{width:"30%",height:"5vh",borderRadius:"6px"}} onClick={()=>{startGame()}}>Igraj Ponovno</button>
+            <button className="border-2 text-white rounded-md hover:text-black hover:bg-white" onClick={()=>{startGame()}}>Igraj Ponovno</button>
           </div> 
           }
         </div>

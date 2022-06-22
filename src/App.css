@@ -13,7 +13,6 @@
   width:70vw;
   height:70vh;
   margin-left: 15vw;
-  margin-top: 10vh;
 }
 
 .rowWrap {
@@ -31,11 +30,11 @@
 }
 
 .showEndGame {
-  height: 50vh;
-  width: 30vw;
+  height: 70vh;
+  width: 50vw;
   position: absolute;
-  top: 25%;
-  left: 35%;
+  top: 15%;
+  left: 25%;
   background-color: rgba(31, 31, 33, 0.9);
   border-radius: 8px;
 }
